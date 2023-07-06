@@ -1,0 +1,4 @@
+name: ArticAntiVPN
+main: es.angelillo15.artic.antivpn.AntiVPNLoader
+version: '$version'
+author: Angelillo15
