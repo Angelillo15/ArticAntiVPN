@@ -14,6 +14,10 @@ public class Config {
         return ConfigLoader.getConfig().getConfig().getBoolean("Config.debug");
     }
 
+    public static int cacheMaxSize() {
+        return getInt("Config.cacheMaxSize");
+    }
+
     public static class Database {
         public static String type() {
             return getString("Database.type");
