@@ -1,6 +1,7 @@
 package es.angelillo15.artic.antivpn.utils;
 
 import es.angelillo15.artic.antivpn.AntiVPN;
+import es.angelillo15.artic.antivpn.api.config.Config;
 import es.angelillo15.artic.antivpn.api.utils.ILogger;
 
 public class BungeeLogger implements ILogger {
@@ -21,6 +22,6 @@ public class BungeeLogger implements ILogger {
 
     @Override
     public void debug(String message) {
-        AntiVPN.getInstance().getLogger().info("[DEBUG] " + message);
+        if (Config.debug()) AntiVPN.getInstance().getLogger().info("[DEBUG] " + message);
     }
 }
