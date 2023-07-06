@@ -10,6 +10,8 @@ Config:
   # Enable or disable the debug mode.
   # If enabled, the plugin will send more information about the plugin status.
   debug: true
+  # Cache max size.
+  cacheMaxSize: 1000
 # Configuration for the VPN database.
 Database:
   # The type of database you want to use, you can choose between SQLite or MySQL.
