@@ -4,9 +4,9 @@ public class AntiVPNLoader extends AntiVPN {
     @Override
     public void onEnable() {
         drawLogo();
-
         loadConfig();
         loadDatabase();
+        registerListeners();
     }
 
     @Override
