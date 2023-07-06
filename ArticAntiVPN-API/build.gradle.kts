@@ -18,6 +18,7 @@ dependencies {
     compileOnly(libs.configManager)
     compileOnly(libs.spigot)
     compileOnly(libs.waterfall)
+    compileOnly(libs.unirest)
 }
 
 blossom {
