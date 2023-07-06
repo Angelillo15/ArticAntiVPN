@@ -27,8 +27,8 @@ public class Config {
             return getString("Database.host");
         }
 
-        public static String port() {
-            return getString("Database.port");
+        public static int port() {
+            return getInt("Database.port");
         }
 
         public static String database() {
