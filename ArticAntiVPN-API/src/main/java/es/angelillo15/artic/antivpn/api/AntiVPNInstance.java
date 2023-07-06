@@ -2,6 +2,7 @@ package es.angelillo15.artic.antivpn.api;
 
 import es.angelillo15.artic.antivpn.api.exceptions.PluginNotLoadedException;
 import es.angelillo15.artic.antivpn.api.utils.ILogger;
+import es.angelillo15.artic.antivpn.api.utils.ServerUtils;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.plugin.Plugin;
 import org.bukkit.Bukkit;
@@ -29,6 +30,14 @@ public interface AntiVPNInstance<P> {
         }
 
         return instance;
+    }
+
+    public static ILogger getLogger() {
+        if (ServerUtils.getServerType() == ServerUtils.ServerType.BUKKIT) {
+            return getInstance().getPLogger();
+        } else {
+            return getBungeeInstance().getPLogger();
+        }
     }
 
     public boolean isDebug();
