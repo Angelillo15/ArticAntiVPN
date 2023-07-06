@@ -9,5 +9,5 @@ import lombok.Data;
 @Table(name = "articantivpn_whitelist_players")
 public class WhiteListPlayers extends StormModel {
     @Column(name = "uuid")
-    private String uuid;
+    private String key;
 }
