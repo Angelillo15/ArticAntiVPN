@@ -14,6 +14,9 @@ public class IPModel extends StormModel {
     @Column(name = "ip")
     private String ip;
 
+    @Column(name = "proxy")
+    private Boolean proxy;
+
     @Column(name = "country")
     private String country;
 
