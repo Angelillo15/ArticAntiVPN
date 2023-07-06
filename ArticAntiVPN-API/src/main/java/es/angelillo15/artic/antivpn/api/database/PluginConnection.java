@@ -8,6 +8,8 @@ import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import es.angelillo15.artic.antivpn.api.AntiVPNInstance;
 import es.angelillo15.artic.antivpn.api.TextUtils;
+import es.angelillo15.artic.antivpn.api.models.IPModel;
+import es.angelillo15.artic.antivpn.api.models.WhiteListPlayers;
 import lombok.Getter;
 import lombok.SneakyThrows;
 
@@ -53,6 +55,8 @@ public class PluginConnection {
         }
 
         instance = this;
+
+        migrate();
     }
 
     public PluginConnection(String pluginPath){
@@ -60,12 +64,12 @@ public class PluginConnection {
         try {
             Class.forName("org.sqlite.JDBC");
         } catch (ClassNotFoundException e) {
-            AntiVPNInstance.getInstance().getPLogger().error((TextUtils.colorize("&c┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓")));
-            AntiVPNInstance.getInstance().getPLogger().error((TextUtils.colorize("&c┃ The SQLite driver couldn't be found!                                     ┃")));
-            AntiVPNInstance.getInstance().getPLogger().error((TextUtils.colorize("&c┃                                                                          ┃")));
-            AntiVPNInstance.getInstance().getPLogger().error((TextUtils.colorize("&c┃ Please, join our Discord server to get support:                          ┃")));
-            AntiVPNInstance.getInstance().getPLogger().error((TextUtils.colorize("&c┃ https://discord.nookure.com                                              ┃")));
-            AntiVPNInstance.getInstance().getPLogger().error((TextUtils.colorize("&c┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛")));
+            AntiVPNInstance.getLogger().error((TextUtils.colorize("&c┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓")));
+            AntiVPNInstance.getLogger().error((TextUtils.colorize("&c┃ The SQLite driver couldn't be found!                                     ┃")));
+            AntiVPNInstance.getLogger().error((TextUtils.colorize("&c┃                                                                          ┃")));
+            AntiVPNInstance.getLogger().error((TextUtils.colorize("&c┃ Please, join our Discord server to get support:                          ┃")));
+            AntiVPNInstance.getLogger().error((TextUtils.colorize("&c┃ https://discord.nookure.com                                              ┃")));
+            AntiVPNInstance.getLogger().error((TextUtils.colorize("&c┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛")));
         }
         try {
             String dataPath = pluginPath + "/database.db";
@@ -76,17 +80,29 @@ public class PluginConnection {
             storm = new Storm(new SqliteFileDriver(new File(dataPath)));
 
         } catch (SQLException e) {
-            AntiVPNInstance.getInstance().getPLogger().error("An error ocurred while trying to connect to the SQLite database: " + e.getMessage());
+            AntiVPNInstance.getLogger().error("An error ocurred while trying to connect to the SQLite database: " + e.getMessage());
         }
 
         instance = this;
+
+        migrate();
+    }
+
+    @SneakyThrows
+    public void migrate() {
+        Storm storm = PluginConnection.getStorm();
+
+        storm.registerModel(new IPModel());
+        storm.runMigrations();
+        storm.registerModel(new WhiteListPlayers());
+        storm.runMigrations();
     }
 
     public static boolean tableExists(String table) {
         try {
             return connection.getMetaData().getTables(null, null, table, null).next();
         } catch (SQLException e) {
-            AntiVPNInstance.getInstance().getPLogger().error("An error ocurred while trying to check if the table " + table + " exists: " + e.getMessage());
+            AntiVPNInstance.getLogger().error("An error ocurred while trying to check if the table " + table + " exists: " + e.getMessage());
             return false;
         }
     }
